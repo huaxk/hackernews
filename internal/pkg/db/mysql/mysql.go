@@ -12,7 +12,7 @@ import (
 var Db *sql.DB
 
 func InitDb() {
-	db, err := sql.Open("mysql", "root:dbpass@tcp(localhost)/hackernews")
+	db, err := sql.Open("mysql", "root:dbpass@tcp(127.0.0.1)/hackernews")
 	if err != nil {
 		log.Panic(err)
 	}
