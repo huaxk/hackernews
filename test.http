@@ -1,0 +1,48 @@
+@graphql_url = http://localhost:8080/query
+
+GET http://127.0.0.1:3000/widgets/
+Content-Type: application/json
+
+###
+POST {{graphql_url}}
+Content-Type: application/json
+# Authorization: Bearer xxx
+X-REQUEST-TYPE: GraphQL
+
+mutation {
+  createUser(input: {username: "user2", password: "123"})
+}
+
+###
+POST {{graphql_url}}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+mutation {
+  login(input: {username: "user1", password: "123"})
+}
+
+###
+POST {{graphql_url}}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+mutation {
+  refreshToken(input: {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTI3NzQyMjAsInVzZXJuYW1lIjoidXNlcjEifQ.wwDnOZp2vgwdKbG_Haiy2VL31pHwoCD3GFVUnJXaOuA"})
+}
+
+###
+POST {{graphql_url}}
+Content-Type: application/json
+Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTI3NzUxODUsInVzZXJuYW1lIjoidXNlcjEifQ.dA9Yzs806dtK3O8yHa9C1yR3VbwdlEYOoKExbyMOdmI"
+X-REQUEST-TYPE: GraphQL
+
+mutation {
+  createLink(input: {title: "new link", address:"http://address.org"}){
+    title,
+    user{
+      name
+    }
+    address
+  }
+}

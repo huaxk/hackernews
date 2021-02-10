@@ -2,6 +2,7 @@ type Link {
   id: ID!
   title: String!
   address: String!
+  userID: String!
   user: User!
 }
 

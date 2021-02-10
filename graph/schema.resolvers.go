@@ -6,46 +6,41 @@ package graph
 import (
 	"context"
 	"fmt"
-	"strconv"
+	"log"
 
 	"github.com/huaxk/hackernews/graph/generated"
 	"github.com/huaxk/hackernews/graph/model"
+	"github.com/huaxk/hackernews/graph/models"
 	"github.com/huaxk/hackernews/internal/auth"
-	"github.com/huaxk/hackernews/internal/links"
-	"github.com/huaxk/hackernews/internal/users"
 	"github.com/huaxk/hackernews/pkg/jwt"
 )
 
-func (r *mutationResolver) CreateLink(ctx context.Context, input model.NewLink) (*model.Link, error) {
+func (r *mutationResolver) CreateLink(ctx context.Context, input model.NewLink) (*models.Link, error) {
 	user := auth.ForContext(ctx)
 	if user == nil {
-		return &model.Link{}, fmt.Errorf("access denied")
+		return &models.Link{}, fmt.Errorf("access denied")
 	}
 
-	link := links.Link{
+	link := models.Link{
 		Title:   input.Title,
 		Address: input.Address,
-		User:    user,
+		UserID:  user.ID,
 	}
-	linkID := link.Save()
-	return &model.Link{
-		ID:      strconv.FormatInt(linkID, 10),
-		Title:   link.Title,
-		Address: link.Address,
-		User: &model.User{
-			ID:   user.ID,
-			Name: user.Username,
-		},
-	}, nil
+	r.DB.Create(link)
+	return &link, nil
 }
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (string, error) {
-	user := users.User{
-		Username: input.Username,
-		Password: input.Password,
+	hashedPassword, err := models.HashPassword(input.Password)
+	if err != nil {
+		log.Fatal(err)
 	}
-	user.Create()
-	token, err := jwt.GenerateToken(user.Username)
+	user := models.User{
+		Name:     input.Username,
+		Password: hashedPassword,
+	}
+	r.DB.Create(&user)
+	token, err := jwt.GenerateToken(user.Name)
 	if err != nil {
 		return "", err
 	}
@@ -53,14 +48,12 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 }
 
 func (r *mutationResolver) Login(ctx context.Context, input model.Login) (string, error) {
-	user := users.User{
-		Username: input.Username,
-		Password: input.Password,
+	var user models.User
+	r.DB.First(&user)
+	if correct := models.CheckPasswordHash(input.Password, user.Password); !correct {
+		return "", fmt.Errorf("WrongUsernameOrPasswordError")
 	}
-	if correct := user.Authenticate(); !correct {
-		return "", &users.WrongUsernameOrPasswordError{}
-	}
-	token, err := jwt.GenerateToken(user.Username)
+	token, err := jwt.GenerateToken(user.Name)
 	if err != nil {
 		return "", err
 	}
@@ -79,20 +72,10 @@ func (r *mutationResolver) RefreshToken(ctx context.Context, input model.Refresh
 	return token, nil
 }
 
-func (r *queryResolver) Links(ctx context.Context) ([]*model.Link, error) {
-	var resultLinks []*model.Link
-	dbLinks := links.GetAll()
-	for _, link := range dbLinks {
-		resultLinks = append(resultLinks, &model.Link{
-			ID:      link.ID,
-			Title:   link.Title,
-			Address: link.Address,
-			User: &model.User{
-				ID:   link.User.ID,
-				Name: link.User.Username,
-			},
-		})
-	}
+func (r *queryResolver) Links(ctx context.Context) ([]*models.Link, error) {
+	var resultLinks []*models.Link
+	r.DB.Find(&resultLinks)
+
 	return resultLinks, nil
 }
 

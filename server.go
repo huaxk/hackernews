@@ -11,7 +11,11 @@ import (
 	"github.com/huaxk/hackernews/graph"
 	"github.com/huaxk/hackernews/graph/generated"
 	"github.com/huaxk/hackernews/internal/auth"
-	database "github.com/huaxk/hackernews/internal/pkg/db/mysql"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+
+	// database "github.com/huaxk/hackernews/internal/pkg/db/mysql"
+	"github.com/huaxk/hackernews/graph/models"
 )
 
 const defaultPort = "8080"
@@ -25,10 +29,15 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(auth.Middleware())
 
-	database.InitDb()
+	// database.InitDb()
 	// database.Migrate()
+	db, err := gorm.Open(postgres.Open("host=localhost port=5432 user=postgres password=postgres dbname=hackernews_development sslmode=disable TimeZone=Asia/Shanghai"), &gorm.Config{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	db.AutoMigrate(&models.User{}, &models.Link{})
 
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{DB: db}}))
 
 	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	router.Handle("/query", srv)
