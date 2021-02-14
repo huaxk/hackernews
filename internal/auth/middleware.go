@@ -3,10 +3,10 @@ package auth
 import (
 	"context"
 	"net/http"
-	"strconv"
 
-	"github.com/huaxk/hackernews/internal/users"
+	"github.com/huaxk/hackernews/internal/models"
 	"github.com/huaxk/hackernews/pkg/jwt"
+	"gorm.io/gorm"
 )
 
 var userCtxKey = &contextKey{"user"}
@@ -15,7 +15,7 @@ type contextKey struct {
 	name string
 }
 
-func Middleware() func(http.Handler) http.Handler {
+func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			header := r.Header.Get("Authorization")
@@ -35,14 +35,12 @@ func Middleware() func(http.Handler) http.Handler {
 			}
 
 			// create user and check if user exists in db
-			user := users.User{Username: username}
-			id, err := users.GetUserIdByUsername(username)
-			if err != nil {
+			var user models.User
+			result := db.Where("name = ?", username).First(&user)
+			if result.Error != nil {
 				next.ServeHTTP(w, r)
 				return
 			}
-			user.ID = strconv.Itoa(id)
-			// put it in context
 			ctx := context.WithValue(r.Context(), userCtxKey, &user)
 
 			// and call the next with our new context
@@ -53,7 +51,7 @@ func Middleware() func(http.Handler) http.Handler {
 }
 
 // ForContext finds the user from the context. REQUIRES Middleware to have run.
-func ForContext(ctx context.Context) *users.User {
-	raw, _ := ctx.Value(userCtxKey).(*users.User)
+func ForContext(ctx context.Context) *models.User {
+	raw, _ := ctx.Value(userCtxKey).(*models.User)
 	return raw
 }

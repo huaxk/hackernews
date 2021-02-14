@@ -55,6 +55,6 @@ models:
       - github.com/99designs/gqlgen/graphql.Int64
       - github.com/99designs/gqlgen/graphql.Int32
   User:
-    model: "github.com/huaxk/hackernews/graph/models.User"
+    model: "github.com/huaxk/hackernews/internal/models.User"
   Link:
-    model: "github.com/huaxk/hackernews/graph/models.Link"
+    model: "github.com/huaxk/hackernews/internal/models.Link"

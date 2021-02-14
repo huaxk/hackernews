@@ -10,12 +10,10 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/huaxk/hackernews/graph"
 	"github.com/huaxk/hackernews/graph/generated"
-	"github.com/huaxk/hackernews/internal/auth"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	// database "github.com/huaxk/hackernews/internal/pkg/db/mysql"
-	"github.com/huaxk/hackernews/graph/models"
+	"github.com/huaxk/hackernews/internal/models"
 )
 
 const defaultPort = "8080"
@@ -26,16 +24,14 @@ func main() {
 		port = defaultPort
 	}
 
-	router := chi.NewRouter()
-	router.Use(auth.Middleware())
-
-	// database.InitDb()
-	// database.Migrate()
 	db, err := gorm.Open(postgres.Open("host=localhost port=5432 user=postgres password=postgres dbname=hackernews_development sslmode=disable TimeZone=Asia/Shanghai"), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
 	db.AutoMigrate(&models.User{}, &models.Link{})
+
+	router := chi.NewRouter()
+	// router.Use(auth.Middleware(db))
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{DB: db}}))
 

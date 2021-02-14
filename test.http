@@ -1,16 +1,12 @@
 @graphql_url = http://localhost:8080/query
 
-GET http://127.0.0.1:3000/widgets/
-Content-Type: application/json
-
-###
 POST {{graphql_url}}
 Content-Type: application/json
 # Authorization: Bearer xxx
 X-REQUEST-TYPE: GraphQL
 
 mutation {
-  createUser(input: {username: "user2", password: "123"})
+  createUser(input: {username: "user1", password: "123"})
 }
 
 ###
@@ -34,7 +30,7 @@ mutation {
 ###
 POST {{graphql_url}}
 Content-Type: application/json
-Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTI3NzUxODUsInVzZXJuYW1lIjoidXNlcjEifQ.dA9Yzs806dtK3O8yHa9C1yR3VbwdlEYOoKExbyMOdmI"
+Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTMwNTY5NjYsInVzZXJuYW1lIjoidXNlcjEifQ.UAxTkTwJn1y3TeEqOsGU_hAf3FLK3VqMmZyKSCpWacU"
 X-REQUEST-TYPE: GraphQL
 
 mutation {

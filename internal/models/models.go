@@ -6,8 +6,8 @@ type Link struct {
 	ID      int    `json:"id" gorm:"primaryKey"`
 	Title   string `json:"title"`
 	Address string `json:"address"`
-	UserID  string `json:"userID"`
-	User    *User  `json:"user" gorm:"foreignKey:UserID"`
+	UserID  int    `json:"userID"`
+	User    User   `json:"user"`
 }
 
 type User struct {
