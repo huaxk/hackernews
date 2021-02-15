@@ -13,6 +13,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
+	"github.com/huaxk/hackernews/internal/auth"
 	"github.com/huaxk/hackernews/internal/models"
 )
 
@@ -31,7 +32,7 @@ func main() {
 	db.AutoMigrate(&models.User{}, &models.Link{})
 
 	router := chi.NewRouter()
-	// router.Use(auth.Middleware(db))
+	router.Use(auth.Middleware(db))
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{DB: db}}))
 

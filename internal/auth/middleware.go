@@ -30,7 +30,7 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 			tokenStr := header
 			username, err := jwt.ParseToken(tokenStr)
 			if err != nil {
-				http.Error(w, "Invalid token", http.StatusForbidden)
+				http.Error(w, err.Error(), http.StatusForbidden)
 				return
 			}
 

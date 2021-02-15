@@ -21,16 +21,18 @@ mutation {
 ###
 POST {{graphql_url}}
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTM0NDI3MTcsInVzZXJuYW1lIjoidXNlcjEifQ.gN13MOCtR5RBrzfPS96z10b-00qVpsjdVUbh0tBkwmw
 X-REQUEST-TYPE: GraphQL
 
 mutation {
-  refreshToken(input: {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTI3NzQyMjAsInVzZXJuYW1lIjoidXNlcjEifQ.wwDnOZp2vgwdKbG_Haiy2VL31pHwoCD3GFVUnJXaOuA"})
+  refreshToken(input: {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTM0NDI3MTcsInVzZXJuYW1lIjoidXNlcjEifQ.gN13MOCtR5RBrzfPS96z10b-00qVpsjdVUbh0tBkwmw"
+  })
 }
 
 ###
 POST {{graphql_url}}
 Content-Type: application/json
-Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTMwNTY5NjYsInVzZXJuYW1lIjoidXNlcjEifQ.UAxTkTwJn1y3TeEqOsGU_hAf3FLK3VqMmZyKSCpWacU"
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6InVzZXIxIiwiZXhwIjoxNjEzNDQ1NzAwfQ.8AlSgte3GgXJ-y7wGMm0zBTqnDTEid0dFPf6Q4M_4o0
 X-REQUEST-TYPE: GraphQL
 
 mutation {

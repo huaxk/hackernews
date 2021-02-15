@@ -1,7 +1,6 @@
 package jwt
 
 import (
-	"log"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -9,27 +8,32 @@ import (
 
 var SecretKey = []byte("secret")
 
+type UserClaims struct {
+	Username string
+	jwt.StandardClaims
+}
+
 func GenerateToken(username string) (string, error) {
-	token := jwt.New(jwt.SigningMethodHS256)
-	claims := token.Claims.(jwt.MapClaims)
-	claims["username"] = username
-	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
-	tokenString, err := token.SignedString(SecretKey)
-	if err != nil {
-		log.Fatal(err)
-		return "", err
+	claims := UserClaims{
+		Username: username,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
+		},
 	}
-	return tokenString, nil
+	return jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString(SecretKey)
 }
 
 func ParseToken(tokenStr string) (string, error) {
-	token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
+	tokenClaims, err := jwt.ParseWithClaims(tokenStr, &UserClaims{}, func(t *jwt.Token) (interface{}, error) {
 		return SecretKey, nil
 	})
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		username := claims["username"].(string)
-		return username, nil
-	} else {
+	if err != nil {
 		return "", err
 	}
+	if tokenClaims != nil {
+		if claims, ok := tokenClaims.Claims.(*UserClaims); ok && tokenClaims.Valid {
+			return claims.Username, nil
+		}
+	}
+	return "", err
 }

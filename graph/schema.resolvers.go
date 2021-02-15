@@ -53,7 +53,7 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 
 func (r *mutationResolver) Login(ctx context.Context, input model.Login) (string, error) {
 	var user models.User
-	r.DB.First(&user)
+	r.DB.Where("name = ?", input.Username).First(&user)
 	if correct := models.CheckPasswordHash(input.Password, user.Password); !correct {
 		return "", fmt.Errorf("WrongUsernameOrPasswordError")
 	}
