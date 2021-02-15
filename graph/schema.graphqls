@@ -1,13 +1,15 @@
+scalar UUID
+
 type Link {
-  id: ID!
+  id: UUID!
   title: String!
   address: String!
-  userID: String!
+  userID: UUID!
   user: User!
 }
 
 type User {
-  id: ID!
+  id: UUID!
   name: String!
 }
 

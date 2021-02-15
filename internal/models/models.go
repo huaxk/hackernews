@@ -1,19 +1,22 @@
 package models
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"github.com/gofrs/uuid"
+	"golang.org/x/crypto/bcrypt"
+)
 
 type Link struct {
-	ID      int    `json:"id" gorm:"primaryKey"`
-	Title   string `json:"title"`
-	Address string `json:"address"`
-	UserID  int    `json:"userID"`
-	User    User   `json:"user"`
+	ID      uuid.UUID `json:"id" gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
+	Title   string    `json:"title"`
+	Address string    `json:"address"`
+	UserID  uuid.UUID `json:"userID"`
+	User    User      `json:"user"`
 }
 
 type User struct {
-	ID       int    `json:"id" gorm:"primaryKey"`
-	Name     string `json:"name"`
-	Password string `json:"password"`
+	ID       uuid.UUID `json:"id" gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
+	Name     string    `json:"name"`
+	Password string    `json:"password"`
 }
 
 //HashPassword hashes given password

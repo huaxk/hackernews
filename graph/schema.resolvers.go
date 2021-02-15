@@ -15,10 +15,6 @@ import (
 	"github.com/huaxk/hackernews/pkg/jwt"
 )
 
-func (r *linkResolver) UserID(ctx context.Context, obj *models.Link) (string, error) {
-	panic(fmt.Errorf("not implemented"))
-}
-
 func (r *mutationResolver) CreateLink(ctx context.Context, input model.NewLink) (*models.Link, error) {
 	user := auth.ForContext(ctx)
 	if user == nil {
@@ -83,15 +79,11 @@ func (r *queryResolver) Links(ctx context.Context) ([]*models.Link, error) {
 	return resultLinks, nil
 }
 
-// Link returns generated.LinkResolver implementation.
-func (r *Resolver) Link() generated.LinkResolver { return &linkResolver{r} }
-
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
-type linkResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }

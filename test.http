@@ -37,10 +37,22 @@ X-REQUEST-TYPE: GraphQL
 
 mutation {
   createLink(input: {title: "new link", address:"http://address.org"}){
-    title,
+    id
+  }
+}
+
+###
+POST {{graphql_url}}
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6InVzZXIxIiwiZXhwIjoxNjEzNDQ1NzAwfQ.8AlSgte3GgXJ-y7wGMm0zBTqnDTEid0dFPf6Q4M_4o0
+X-REQUEST-TYPE: GraphQL
+
+query {
+  links{
+    id
+    title
     user{
-      name
+      id
     }
-    address
   }
 }
