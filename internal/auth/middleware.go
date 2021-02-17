@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/huaxk/hackernews/internal/models"
+	"github.com/huaxk/hackernews/models"
 	"github.com/huaxk/hackernews/pkg/jwt"
 	"gorm.io/gorm"
 )

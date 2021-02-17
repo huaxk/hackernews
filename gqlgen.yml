@@ -14,8 +14,8 @@ exec:
 
 # Where should any generated models go?
 model:
-  filename: graph/model/models_gen.go
-  package: model
+  filename: models/models_gen.go
+  package: models
 
 # Where should the resolver implementations go?
 resolver:
@@ -35,7 +35,7 @@ resolver:
 # gqlgen will search for any type names in the schema in these go packages
 # if they match it will use them, otherwise it will generate them.
 autobind:
-  - "github.com/huaxk/hackernews/graph/model"
+  - "github.com/huaxk/hackernews/models"
 
 # This section declares type mapping between the GraphQL and go type systems
 #
@@ -57,6 +57,6 @@ models:
   UUID:
     model: github.com/huaxk/hackernews/graph/model.UUID
   User:
-    model: "github.com/huaxk/hackernews/internal/models.User"
+    model: "github.com/huaxk/hackernews/models.User"
   Link:
-    model: "github.com/huaxk/hackernews/internal/models.Link"
+    model: "github.com/huaxk/hackernews/models.Link"
