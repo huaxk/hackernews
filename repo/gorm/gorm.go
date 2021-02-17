@@ -13,12 +13,12 @@ import (
 	"gorm.io/gorm"
 )
 
-type repoSvc struct {
+type repoService struct {
 	db *gorm.DB
 }
 
 func NewRepository(db *gorm.DB) repo.Repository {
-	return &repoSvc{
+	return &repoService{
 		db: db,
 	}
 }
@@ -27,7 +27,7 @@ func Open(dsn string) (*gorm.DB, error) {
 	return gorm.Open(postgres.Open(dsn), &gorm.Config{})
 }
 
-func (r *repoSvc) CreateLink(ctx context.Context, input models.NewLink) (*models.Link, error) {
+func (r *repoService) CreateLink(ctx context.Context, input models.NewLink) (*models.Link, error) {
 	user := auth.ForContext(ctx)
 	if user == nil {
 		return &models.Link{}, fmt.Errorf("access denied")
@@ -42,7 +42,7 @@ func (r *repoSvc) CreateLink(ctx context.Context, input models.NewLink) (*models
 	return &link, nil
 }
 
-func (r *repoSvc) CreateUser(ctx context.Context, input models.NewUser) (string, error) {
+func (r *repoService) CreateUser(ctx context.Context, input models.NewUser) (string, error) {
 	hashedPassword, err := models.HashPassword(input.Password)
 	if err != nil {
 		log.Fatal(err)
@@ -59,7 +59,7 @@ func (r *repoSvc) CreateUser(ctx context.Context, input models.NewUser) (string,
 	return token, nil
 }
 
-func (r *repoSvc) Login(ctx context.Context, input models.Login) (string, error) {
+func (r *repoService) Login(ctx context.Context, input models.Login) (string, error) {
 	var user models.User
 	r.db.Where("name = ?", input.Username).First(&user)
 	if correct := models.CheckPasswordHash(input.Password, user.Password); !correct {
@@ -72,7 +72,7 @@ func (r *repoSvc) Login(ctx context.Context, input models.Login) (string, error)
 	return token, nil
 }
 
-func (r *repoSvc) RefreshToken(ctx context.Context, input models.RefreshTokenInput) (string, error) {
+func (r *repoService) RefreshToken(ctx context.Context, input models.RefreshTokenInput) (string, error) {
 	username, err := jwt.ParseToken(input.Token)
 	if err != nil {
 		return "", fmt.Errorf("access denied: %s", err)
@@ -84,7 +84,7 @@ func (r *repoSvc) RefreshToken(ctx context.Context, input models.RefreshTokenInp
 	return token, nil
 }
 
-func (r *repoSvc) Links(ctx context.Context) ([]*models.Link, error) {
+func (r *repoService) Links(ctx context.Context) ([]*models.Link, error) {
 	var resultLinks []*models.Link
 	r.db.Preload("User").Find(&resultLinks)
 
