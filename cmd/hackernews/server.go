@@ -6,12 +6,11 @@ import (
 	"os"
 
 	"github.com/go-chi/chi"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 
-	"github.com/huaxk/hackernews/gqlgen"
+	"github.com/huaxk/hackernews/graph/handler"
 	"github.com/huaxk/hackernews/internal/auth"
 	"github.com/huaxk/hackernews/models"
+	"github.com/huaxk/hackernews/repo/gorm"
 )
 
 const defaultPort = "8080"
@@ -22,7 +21,7 @@ func main() {
 		port = defaultPort
 	}
 
-	db, err := gorm.Open(postgres.Open("host=localhost port=5432 user=postgres password=postgres dbname=hackernews_development sslmode=disable TimeZone=Asia/Shanghai"), &gorm.Config{})
+	db, err := gorm.Open("host=localhost port=5432 user=postgres password=postgres dbname=hackernews_development sslmode=disable TimeZone=Asia/Shanghai")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -31,8 +30,8 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(auth.Middleware(db))
 
-	router.Handle("/", gqlgen.NewPlaygroundHandler("/query"))
-	router.Handle("/query", gqlgen.NewHandler(db))
+	router.Handle("/", handler.NewPlaygroundHandler("/query"))
+	router.Handle("/query", handler.NewHandler(gorm.NewRepository(db)))
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))

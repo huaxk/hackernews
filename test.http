@@ -32,7 +32,7 @@ mutation {
 ###
 POST {{graphql_url}}
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6InVzZXIxIiwiZXhwIjoxNjEzNDQ1NzAwfQ.8AlSgte3GgXJ-y7wGMm0zBTqnDTEid0dFPf6Q4M_4o0
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6InVzZXIxIiwiZXhwIjoxNjEzNjU5MTgwfQ.9IfUShgi1avdfgrMkfFFbxrAO_AnaQxcsjYE_s7kRDM
 X-REQUEST-TYPE: GraphQL
 
 mutation {
@@ -44,7 +44,7 @@ mutation {
 ###
 POST {{graphql_url}}
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6InVzZXIxIiwiZXhwIjoxNjEzNDQ1NzAwfQ.8AlSgte3GgXJ-y7wGMm0zBTqnDTEid0dFPf6Q4M_4o0
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6InVzZXIxIiwiZXhwIjoxNjEzNjU5MTgwfQ.9IfUShgi1avdfgrMkfFFbxrAO_AnaQxcsjYE_s7kRDM
 X-REQUEST-TYPE: GraphQL
 
 query {

@@ -1,4 +1,4 @@
-package repo
+package gorm
 
 import (
 	"context"
@@ -8,6 +8,8 @@ import (
 	"github.com/huaxk/hackernews/internal/auth"
 	"github.com/huaxk/hackernews/models"
 	"github.com/huaxk/hackernews/pkg/jwt"
+	"github.com/huaxk/hackernews/repo"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -15,10 +17,14 @@ type repoSvc struct {
 	db *gorm.DB
 }
 
-func NewRepository(db *gorm.DB) Repository {
+func NewRepository(db *gorm.DB) repo.Repository {
 	return &repoSvc{
 		db: db,
 	}
+}
+
+func Open(dsn string) (*gorm.DB, error) {
+	return gorm.Open(postgres.Open(dsn), &gorm.Config{})
 }
 
 func (r *repoSvc) CreateLink(ctx context.Context, input models.NewLink) (*models.Link, error) {

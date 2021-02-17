@@ -56,7 +56,3 @@ models:
       - github.com/99designs/gqlgen/graphql.Int32
   UUID:
     model: github.com/huaxk/hackernews/graph/model.UUID
-  User:
-    model: "github.com/huaxk/hackernews/models.User"
-  Link:
-    model: "github.com/huaxk/hackernews/models.Link"

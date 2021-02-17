@@ -1,4 +1,4 @@
-package gqlgen
+package handler
 
 import (
 	"net/http"
