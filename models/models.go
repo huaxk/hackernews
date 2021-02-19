@@ -5,8 +5,13 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+var DbModels = []interface{}{
+	&User{},
+	&Link{},
+}
+
 type Link struct {
-	ID      uuid.UUID `json:"id" gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
+	ID      uuid.UUID `json:"id" gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
 	Title   string    `json:"title"`
 	Address string    `json:"address"`
 	UserID  uuid.UUID `json:"userID"`
@@ -14,7 +19,7 @@ type Link struct {
 }
 
 type User struct {
-	ID       uuid.UUID `json:"id" gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
+	ID       uuid.UUID `json:"id" gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
 	Name     string    `json:"name"`
 	Password string    `json:"password"`
 }

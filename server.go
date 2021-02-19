@@ -9,7 +9,6 @@ import (
 
 	"github.com/huaxk/hackernews/graph/handler"
 	"github.com/huaxk/hackernews/internal/auth"
-	"github.com/huaxk/hackernews/models"
 	"github.com/huaxk/hackernews/repo/gorm"
 )
 
@@ -25,7 +24,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	db.AutoMigrate(&models.User{}, &models.Link{})
+	// db.AutoMigrate(&models.User{}, &models.Link{})
 
 	router := chi.NewRouter()
 	router.Use(auth.Middleware(db))
