@@ -8,6 +8,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/dgryski/trifles v0.0.0-20210119233746-37d926d5de6c // indirect
 	github.com/go-chi/chi v4.1.2+incompatible
+	github.com/gobuffalo/envy v1.9.0
 	github.com/gofrs/uuid v4.0.0+incompatible
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/jackc/pgmock v0.0.0-20201204152224-4fe30f7445fd // indirect
@@ -15,6 +16,7 @@ require (
 	github.com/lib/pq v1.9.0 // indirect
 	github.com/markbates/grift v1.5.0
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
+	github.com/pioz/faker v1.7.0
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
