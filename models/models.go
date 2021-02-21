@@ -11,7 +11,7 @@ var DbModels = []interface{}{
 }
 
 type Link struct {
-	ID      uuid.UUID `json:"id" gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
+	ID      uuid.UUID `json:"id" gorm:"primaryKey;type:uuid;default:gen_random_uuid()" faker:"-"`
 	Title   string    `json:"title"`
 	Address string    `json:"address"`
 	UserID  uuid.UUID `json:"userID"`
@@ -19,8 +19,8 @@ type Link struct {
 }
 
 type User struct {
-	ID       uuid.UUID `json:"id" gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
-	Name     string    `json:"name"`
+	ID       uuid.UUID `json:"id" gorm:"primaryKey;type:uuid;default:gen_random_uuid()" faker:"-"`
+	Name     string    `json:"name" faker:"username"`
 	Password string    `json:"password"`
 }
 
